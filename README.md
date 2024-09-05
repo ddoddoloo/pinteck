@@ -30,7 +30,8 @@
    저축 목표 관리: 사용자가 특정 금액의 저축 목표를 설정하고 이를 달성하기 위한 진행 상황을 확인할 수 있습니다.
 
 ## ERD 
-![image](https://github.com/user-attachments/assets/07097c71-9992-4017-9cf5-0f957a50011e)
+![image](https://github.com/user-attachments/assets/82f3ec96-3f07-437e-b643-2b683946f74a)
+
 
 
 ## 테이블 설명
