@@ -1,29 +1,23 @@
 package com.example.pinteck.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-	// 사용자 인증에 대한 설정 (예: 사용자 세부 정보 서비스 설정 등)
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf().disable()
-			.authorizeRequests()
-			.antMatchers("/api/auth/**", "/swagger-ui/**", "/v2/api-docs/**").permitAll()
-			.anyRequest().authenticated();
-		// JWT 인증 필터 추가 필요
-	}
+			.csrf(csrf -> csrf.disable())  // CSRF 보호 비활성화
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()  // 인증 없이 접근 가능한 경로
+				.anyRequest().authenticated()  // 나머지 요청은 인증 필요
+			)
+			.httpBasic(httpBasic -> {});  // HTTP Basic 인증 활성화
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// 사용자 인증 매니저 설정
+		return http.build();
 	}
 }
