@@ -1,40 +1,37 @@
 package com.example.pinteck.domain;
 
-
-import java.math.BigDecimal;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Entity
 @Getter
 @Setter
-@Entity
+@Table(name = "account")
 public class Account {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long accountId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@ManyToOne
+	@JoinColumn(name = "userId", nullable = false)
 	private User user;
 
-	@Column(nullable = false)
+	private String accountType;
 	private String accountNumber;
-
-	@Column(nullable = false)
 	private String bankName;
+	private double balance;
 
-	@Column(nullable = false)
-	private BigDecimal balance;
+	@Column(updatable = false)
+	private LocalDateTime createdAt = LocalDateTime.now();
 
-	// Getters and Setters
+	private LocalDateTime updatedAt = LocalDateTime.now();
+
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+	private List<Transaction> transactions;
+
 }
