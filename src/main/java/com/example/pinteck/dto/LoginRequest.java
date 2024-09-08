@@ -1,14 +1,17 @@
 package com.example.pinteck.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class LoginRequest {
 
-	@NotBlank(message = "사용자 이름은 필수 항목입니다.")
+	@NotBlank
 	private String username;
 
-	@NotBlank(message = "비밀번호는 필수 항목입니다.")
+	@NotBlank
 	private String password;
 
-	// Getters and Setters
 }

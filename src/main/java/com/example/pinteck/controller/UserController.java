@@ -2,11 +2,15 @@ package com.example.pinteck.controller;
 
 import com.example.pinteck.domain.User;
 import com.example.pinteck.dto.LoginRequest;
-import com.example.pinteck.dto.SignupRequest;
+import com.example.pinteck.security.JwtTokenProvider;
 import com.example.pinteck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -14,19 +18,29 @@ import jakarta.validation.Valid;
 public class UserController {
 
 	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
 	private UserService userService;
 
-	// 회원가입 엔드포인트
+	@Autowired
+	private JwtTokenProvider tokenProvider;
+
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request) {
-		User user = userService.signup(request);
-		return ResponseEntity.status(201).body(user);
+	public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
+		userService.registerUser(user.getUsername(), user.getPassword(), user.getEmail());
+		return ResponseEntity.ok("회원가입이 완료되었습니다.");
 	}
 
-	// 로그인 엔드포인트
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
-		String token = userService.login(request);
-		return ResponseEntity.ok().body(token);
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+		Authentication authentication = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(
+				loginRequest.getUsername(),
+				loginRequest.getPassword()
+			)
+		);
+		String jwt = tokenProvider.generateToken(authentication);
+		return ResponseEntity.ok(jwt);
 	}
 }
