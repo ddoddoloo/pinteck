@@ -1,6 +1,7 @@
 package com.example.pinteck.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.example.pinteck.security.JwtTokenProvider;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-		throws IOException, ServletException {
+		throws ServletException, IOException {
 		String token = getJwtFromRequest(request);
 
 		if (token != null && tokenProvider.validateToken(token)) {
@@ -34,11 +37,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 			if (userDetails != null) {
-				Authentication authentication = new JwtAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				// UsernamePasswordAuthenticationToken을 사용하여 인증 객체 생성
+				Authentication authentication = new UsernamePasswordAuthenticationToken(
+					userDetails,
+					null,
+					userDetails.getAuthorities()
+				);
+
+				// UsernamePasswordAuthenticationToken으로 캐스팅하여 setDetails 사용
+				if (authentication instanceof UsernamePasswordAuthenticationToken) {
+					((UsernamePasswordAuthenticationToken) authentication)
+						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				}
+
+				// SecurityContext에 인증 정보 설정
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
+
 		filterChain.doFilter(request, response);
 	}
 
