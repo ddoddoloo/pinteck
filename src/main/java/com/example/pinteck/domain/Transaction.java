@@ -28,5 +28,4 @@ public class Transaction {
 	private LocalDateTime transactionDate;
 	private String description;
 
-	// Getters and Setters
 }
