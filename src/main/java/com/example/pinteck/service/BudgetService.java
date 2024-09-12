@@ -1,14 +1,18 @@
 package com.example.pinteck.service;
 
 import com.example.pinteck.domain.Budget;
-import com.example.pinteck.domain.Transaction;
 import com.example.pinteck.repository.BudgetRepository;
 import com.example.pinteck.repository.TransactionRepository;
+import com.example.pinteck.domain.Transaction;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Repository
 @Service
 public class BudgetService {
 
@@ -18,6 +22,20 @@ public class BudgetService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	// 사용자의 예산 목록 조회 메서드
+	public List<Budget> getBudgetsByUserId(Long userId) {
+		return budgetRepository.findByUserId(userId);  // 사용자 ID를 기준으로 예산 조회
+	}
+
+	public Budget createBudget(Budget budget) {
+		return budgetRepository.save(budget);
+	}
+
+	public void deleteBudget(Long budgetId) {
+		budgetRepository.deleteById(budgetId);
+	}
+
+	// 예산 초과 여부 확인 메서드
 	public boolean isBudgetExceeded(Long userId, Long categoryId) {
 		List<Budget> budgets = budgetRepository.findByUserIdAndCategoryId(userId, categoryId);
 		if (budgets.isEmpty()) {
