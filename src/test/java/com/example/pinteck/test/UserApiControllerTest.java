@@ -5,9 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.example.pinteck.test.User;
-import com.example.pinteck.test.SignupRequest;
-import com.example.pinteck.test.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +20,11 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserApiControllerTest {
@@ -66,17 +68,17 @@ class UserApiControllerTest {
 		// then: 응답 상태 코드 확인 및 데이터베이스 검증
 		result.andExpect(status().isCreated());
 
-		List<User> users = userRepository.findAll();
-		assertThat(users.size()).isEqualTo(1);
-		assertThat(users.get(0).getUsername()).isEqualTo("testuser");
-		assertThat(users.get(0).getEmail()).isEqualTo("testuser@example.com");
+		List<User> users = userRepository.findAll();  // "user" 대신 "users"로 변수명을 변경
+		assertThat(users.size()).isEqualTo(1);  // 리스트의 크기가 1인지 확인
+		assertThat(users.get(0).getUsername()).isEqualTo("testuser");  // 첫 번째 요소의 username 확인
+		assertThat(users.get(0).getEmail()).isEqualTo("testuser@example.com");  // 첫 번째 요소의 email 확인
+
 	}
 
 	@DisplayName("로그인: 성공적으로 로그인할 수 있다")
 	@Test
 	public void loginUser() throws Exception {
 
-		// given: 테스트를 위한 사용자 등록
 		User user = new User();
 		user.setUsername("testuser");
 		user.setPassword("password123"); // 실제로는 암호화된 비밀번호를 사용해야 함
