@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")  // 테이블명 설정
+@Table(name = "user")
 public class User {
 
 	@Id
@@ -29,7 +29,6 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	// Getters and Setters
 	public Long getId() {
 		return id;
 	}

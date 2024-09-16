@@ -19,7 +19,6 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public User registerUser(String username, String password, String email) {
