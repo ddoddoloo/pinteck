@@ -3,11 +3,14 @@ package com.example.pinteck.controller;
 import com.example.pinteck.domain.Transaction;
 import com.example.pinteck.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -40,4 +43,16 @@ public class TransactionController {
 		List<Transaction> transactions = transactionService.searchTransactionsByDateRange(start, end);
 		return ResponseEntity.ok(transactions);
 	}
+
+	@GetMapping("/search/paged")
+	public ResponseEntity<Page<Transaction>> searchTransactionsPaged(
+		@RequestParam String keyword,
+		@RequestParam int page,
+		@RequestParam int size) {
+
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Transaction> transactions = transactionService.searchTransactionsPaged(keyword, pageable);
+		return ResponseEntity.ok(transactions);
+	}
+
 }
