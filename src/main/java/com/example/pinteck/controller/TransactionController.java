@@ -13,13 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/api/transaction")
 public class TransactionController {
 
 	@Autowired
 	private TransactionService transactionService;
 
-	// 거래 설명으로 검색
+	// 거래 내역과 설명으로 검색
 	@GetMapping("/search/description")
 	public ResponseEntity<List<Transaction>> searchTransactionsByDescription(@RequestParam String keyword) {
 		List<Transaction> transactions = transactionService.searchTransactionsByDescription(keyword);

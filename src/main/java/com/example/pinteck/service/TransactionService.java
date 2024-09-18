@@ -21,7 +21,7 @@ public class TransactionService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
-	// 거래 설명으로 검색
+	// 거래 내역과 설명으로 검색
 	public List<Transaction> searchTransactionsByDescription(String keyword) {
 		return transactionRepository.findByDescriptionContainingIgnoreCase(keyword);
 	}
