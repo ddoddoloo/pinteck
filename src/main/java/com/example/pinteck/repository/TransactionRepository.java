@@ -24,6 +24,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	// 거래 날짜 범위로 지출 내역 검색
 	List<Transaction> findByTransactionDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-	// 설명으로 검색한 결과를 페이징 처리
+	// 설명으로 검색한 결과를 페이징
 	Page<Transaction> findByDescriptionContainingIgnoreCase(String keyword, Pageable pageable);
 }

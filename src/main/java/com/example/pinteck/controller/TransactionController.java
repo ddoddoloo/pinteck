@@ -44,6 +44,7 @@ public class TransactionController {
 		return ResponseEntity.ok(transactions);
 	}
 
+	// 설명으로 검색한 거래 내역을 페이징 처리해서 가져오는 메서드
 	@GetMapping("/search/paged")
 	public ResponseEntity<Page<Transaction>> searchTransactionsPaged(
 		@RequestParam String keyword,

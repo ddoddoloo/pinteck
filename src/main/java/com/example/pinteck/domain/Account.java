@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "account")
+
 public class Account {
 
 	@Id
