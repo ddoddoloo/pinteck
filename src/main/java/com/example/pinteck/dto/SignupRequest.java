@@ -2,7 +2,11 @@ package com.example.pinteck.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class SignupRequest {
 
 	@NotBlank(message = "사용자 이름은 필수 항목입니다.")
@@ -13,6 +17,4 @@ public class SignupRequest {
 
 	@Email(message = "유효한 이메일 주소를 입력하세요.")
 	private String email;
-
-	// Getters and Setters
 }

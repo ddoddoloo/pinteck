@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
