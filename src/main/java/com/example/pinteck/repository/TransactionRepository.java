@@ -9,6 +9,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+// 예산 초과 여부를 확인하기 위해 거래 내역 조회
+
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
